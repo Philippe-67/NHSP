@@ -18,7 +18,7 @@ namespace UI.Controllers
         {
             return View();
         }
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
         public IActionResult Privacy()
         {
             return View();

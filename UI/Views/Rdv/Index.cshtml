@@ -1,0 +1,109 @@
+﻿@model UI.Models.Rdv
+
+@{
+    ViewData["Title"] = "Liste des rendez-vous disponibles avec le docteur " + @ViewData["NomPraticien"];
+}
+
+<h2 style="margin-top: 20px; margin-bottom: 20px;padding-left: 300px;">@ViewData["Title"]</h2>
+
+@* <p>Filtre par Nom du Praticien: @ViewData["NomPraticien"]</p> *@
+
+<h3>
+    <form method="get" asp-action="Index">
+        <input type="hidden" name="PraticienId" value="@ViewData["PraticienId"]">
+        <input type="hidden" name="NomPraticien" value="@ViewData["NomPraticien"]">
+
+        @{
+            var moisList = new List<SelectListItem>
+        {
+        new SelectListItem { Text = "Janvier", Value = "1" },
+        new SelectListItem { Text = "Février", Value = "2" },
+        new SelectListItem { Text = "Mars", Value = "3" },
+        new SelectListItem { Text = "Avril", Value = "4" },
+        new SelectListItem { Text = "Mai", Value = "5" },
+        new SelectListItem { Text = "Juin", Value = "6" },
+        new SelectListItem { Text = "Juillet", Value = "7" },
+        new SelectListItem { Text = "Aout", Value = "8" },
+        new SelectListItem { Text = "Septembre", Value = "9" },
+        new SelectListItem { Text = "Octobre", Value = "10" },
+        new SelectListItem { Text = "Novembre", Value = "11" },
+        new SelectListItem { Text = "Décemnbre", Value = "12" },
+        // ... Ajoutez les autres mois de l'année avec leurs valeurs respectives
+        };
+        }
+
+        <div style="display: flex; align-items: center;">
+            <label style="padding-left: 300px; width: 100px; color: black;" for="Annee">:</label>
+            @Html.DropDownList("annee", (SelectList)ViewBag.Annees, new { onchange = "this.form.submit()" })
+
+            <label style="padding-left: 10px;" for="Mois">Mois :</label>
+            @*  @Html.DropDownList("mois", (SelectList)ViewBag.Mois, new { onchange = "this.form.submit()" }) *@
+            @Html.DropDownList("mois", new SelectList(moisList, "Value", "Text"), new { onchange = "this.form.submit()" })
+        </div>
+        @*       <label style="padding-left: 600px;width: 50px; color: black;" for="Annee">Année :</label>
+        @Html.DropDownList("annee", (SelectList)ViewBag.Annees, new { onchange = "this.form.submit()" })
+
+        <label for="Mois">Mois :</label>
+        @Html.DropDownList("mois", (SelectList)ViewBag.Mois, new { onchange = "this.form.submit()" })
+        *@
+    </form>
+</h3>
+@* @* <p>Nombre de jours dans le mois sélectionné : @ViewBag.NombreDeJoursDansMois</p>
+
+
+<table class="table">
+    <thead>
+        <tr>
+          @*   <th>ID</th>
+            <th>Nom du Praticien</th>
+            <th>Date</th>
+            @* <th>Patient</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var rdv in ViewBag.rdvs)
+        {
+            <tr>
+                @* <td>@rdv.Id</td>
+                <td>@rdv.NomPraticien</td>
+                <td>@rdv.Date.ToString("dddd, dd  MMMM yyyy")</td>
+                @* <td>@rdv.NomPatient</td>
+            </tr>
+        }
+    </tbody>
+  </table>*@
+<h3>Jours disponibles :</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Jour</th>
+            <th>Date</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var jourDisponible in ViewBag.JoursDisponibles)
+        {
+            if (jourDisponible >= DateTime.Now.Date)
+            {
+                <tr>
+                    <td>@jourDisponible.ToString("dddd")</td> <!-- Affiche le nom du jour -->
+                    <td>@jourDisponible.ToString("dd/MM/yyyy")</td> <!-- Affiche la date -->
+                    <td>
+                        <a href="@Url.Action("Create", "Rdv", new { jourDisponible= @jourDisponible, praticienId = @ViewData["PraticienId"],nomPraticien=@ViewData["NomPraticien"] })" class="btn btn-primary">Prendre un rendez-vous</a>
+
+                    </td>
+                </tr>
+            }
+
+        }
+
+    </tbody>
+    @if (!string.IsNullOrEmpty(ViewBag.ConfirmationMessage))
+    {
+        <div class="alert alert-success">
+            @ViewBag.ConfirmationMessage
+        </div>
+    }
+</table>

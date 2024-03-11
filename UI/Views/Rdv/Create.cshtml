@@ -1,0 +1,43 @@
+﻿@model UI.Models.Rdv
+
+<h2>Créer un rendez-vous</h2>
+<p>Praticien ID: @ViewData["PraticienId"]</p>
+<p>Nom du Praticien: @ViewData["NomPraticien"]</p>
+@* <p>jour disponible choisi :@ViewData["Date"]</p>
+ *@
+<p>jour disponible choisi :@(((DateTime)ViewData["Date"]).ToString("dd/MM/yyyy"))</p>
+
+
+
+
+<form asp-action="Create" method="post" enctype="application/json">
+    <div class="form-group">
+        <label asp-for="NomPatient">Nom du Patient</label>
+        <input asp-for="NomPatient" class="form-control" />
+        <span asp-validation-for="NomPatient" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="NomPraticien">Nom du Praticien</label>
+        <input asp-for="NomPraticien" class="form-control" />
+        <span asp-validation-for="NomPraticien" class="text-danger"></span>
+    </div>
+
+
+    @{
+        string dateISO8601 = ((DateTime)ViewData["Date"]).ToString("yyyy-MM-dd");
+    }
+
+    <div class="form-group">
+        <label asp-for="Date">Date du Rendez-vous</label>
+        <input asp-for="Date" type="date" class="form-control" value="@dateISO8601" />
+        <span asp-validation-for="Date" class="text-danger"></span>
+    </div>
+
+
+    <!-- Ajoutez d'autres champs si nécessaire -->
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Créer le rendez-vous</button>
+    </div>
+</form>
