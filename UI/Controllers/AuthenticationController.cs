@@ -11,7 +11,7 @@ namespace UI.Controllers
         public AuthenticationController(IAuthService authService)
         {
             _authService = authService;
-        }
+        } 
 
         public IActionResult Register()
         {
