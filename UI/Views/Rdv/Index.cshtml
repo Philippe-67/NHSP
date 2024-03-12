@@ -7,7 +7,7 @@
 <h2 style="margin-top: 20px; margin-bottom: 20px;padding-left: 300px;">@ViewData["Title"]</h2>
 
 @* <p>Filtre par Nom du Praticien: @ViewData["NomPraticien"]</p> *@
-
+    <div style="margin: 0 auto; width: 50%;">
 <h3>
     <form method="get" asp-action="Index">
         <input type="hidden" name="PraticienId" value="@ViewData["PraticienId"]">
@@ -41,8 +41,11 @@
         </div>
       
     </form>
+    </div>
 </h3>
-<h3>Jours disponibles :</h3>
+
+<div style="margin: 0 auto; width: 50%;">
+    <h3>Jours disponibles :</h3>
 <table class="table">
     <thead>
         <tr>
@@ -76,3 +79,4 @@
         </div>
     }
 </table>
+</div>

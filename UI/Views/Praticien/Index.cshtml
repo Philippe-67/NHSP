@@ -6,7 +6,7 @@
 
 <h2 style="margin-top: 20px; margin-bottom: 20px;padding-left: 300px;">@ViewData["Title"]</h2>
 
-<table class="table">
+@*<table class="table">
     <thead>
         <tr>
             <th style="padding-left: 600px;width: 50px; color: black;">Nom du Praticien</th>
@@ -29,3 +29,29 @@
         }
     </tbody>
 </table>
+ *@
+<div style="margin: 0 auto; width: 50%;">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom du Praticien</th>
+                <th>Specialité</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var praticien in ViewBag.Praticiens)
+            {
+                <tr>
+                    <td>docteur @praticien.NomPraticien</td>
+                    <td>@praticien.Specialite</td>
+                    <td>
+                        <div style="margin-right: 20px;">
+                            <a href="@Url.Action("Index", "Rdv", new { praticienId = praticien.Id, nomPraticien = praticien.NomPraticien })" class="btn btn-primary">agenda</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
