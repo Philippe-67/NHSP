@@ -13,66 +13,35 @@
         <input type="hidden" name="PraticienId" value="@ViewData["PraticienId"]">
         <input type="hidden" name="NomPraticien" value="@ViewData["NomPraticien"]">
 
-        @{
-            var moisList = new List<SelectListItem>
-        {
-        new SelectListItem { Text = "Janvier", Value = "1" },
-        new SelectListItem { Text = "Février", Value = "2" },
-        new SelectListItem { Text = "Mars", Value = "3" },
-        new SelectListItem { Text = "Avril", Value = "4" },
-        new SelectListItem { Text = "Mai", Value = "5" },
-        new SelectListItem { Text = "Juin", Value = "6" },
-        new SelectListItem { Text = "Juillet", Value = "7" },
-        new SelectListItem { Text = "Aout", Value = "8" },
-        new SelectListItem { Text = "Septembre", Value = "9" },
-        new SelectListItem { Text = "Octobre", Value = "10" },
-        new SelectListItem { Text = "Novembre", Value = "11" },
-        new SelectListItem { Text = "Décemnbre", Value = "12" },
-        // ... Ajoutez les autres mois de l'année avec leurs valeurs respectives
-        };
-        }
-
         <div style="display: flex; align-items: center;">
             <label style="padding-left: 300px; width: 100px; color: black;" for="Annee">:</label>
             @Html.DropDownList("annee", (SelectList)ViewBag.Annees, new { onchange = "this.form.submit()" })
 
             <label style="padding-left: 10px;" for="Mois">Mois :</label>
-            @*  @Html.DropDownList("mois", (SelectList)ViewBag.Mois, new { onchange = "this.form.submit()" }) *@
-            @Html.DropDownList("mois", new SelectList(moisList, "Value", "Text"), new { onchange = "this.form.submit()" })
+            @{
+                var currentMonth = DateTime.Now.Month;
+                var months = new[]
+                {
+            new SelectListItem { Value = "1", Text = "Janvier" },
+            new SelectListItem { Value = "2", Text = "Février" },
+            new SelectListItem { Value = "3", Text = "Mars" },
+            new SelectListItem { Value = "4", Text = "Avril" },
+            new SelectListItem { Value = "5", Text = "Mai" },
+            new SelectListItem { Value = "6", Text = "Juin" },
+            new SelectListItem { Value = "7", Text = "Juillet" },
+            new SelectListItem { Value = "8", Text = "Août" },
+            new SelectListItem { Value = "9", Text = "Septembre" },
+            new SelectListItem { Value = "10", Text = "Octobre" },
+            new SelectListItem { Value = "11", Text = "Novembre" },
+            new SelectListItem { Value = "12", Text = "Décembre" }
+            };
+                var selectedMonth = currentMonth.ToString();
+            }
+            @Html.DropDownList("mois", new SelectList(months, "Value", "Text", selectedMonth), new { onchange = "this.form.submit()" })
         </div>
-        @*       <label style="padding-left: 600px;width: 50px; color: black;" for="Annee">Année :</label>
-        @Html.DropDownList("annee", (SelectList)ViewBag.Annees, new { onchange = "this.form.submit()" })
-
-        <label for="Mois">Mois :</label>
-        @Html.DropDownList("mois", (SelectList)ViewBag.Mois, new { onchange = "this.form.submit()" })
-        *@
+      
     </form>
 </h3>
-@* @* <p>Nombre de jours dans le mois sélectionné : @ViewBag.NombreDeJoursDansMois</p>
-
-
-<table class="table">
-    <thead>
-        <tr>
-          @*   <th>ID</th>
-            <th>Nom du Praticien</th>
-            <th>Date</th>
-            @* <th>Patient</th>
-
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var rdv in ViewBag.rdvs)
-        {
-            <tr>
-                @* <td>@rdv.Id</td>
-                <td>@rdv.NomPraticien</td>
-                <td>@rdv.Date.ToString("dddd, dd  MMMM yyyy")</td>
-                @* <td>@rdv.NomPatient</td>
-            </tr>
-        }
-    </tbody>
-  </table>*@
 <h3>Jours disponibles :</h3>
 <table class="table">
     <thead>

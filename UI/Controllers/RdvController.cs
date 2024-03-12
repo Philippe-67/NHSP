@@ -50,19 +50,21 @@ public class RdvController : Controller
         /// 2.4.2 implémantation de la liste de date dans le mois sélectioné
         List<DateTime> datesDuMois = new List<DateTime>();
         //et
-        /// >>>>> 2.4.3 Création de la liste de dates  disponibles ("joursDiponibles") pour le mois sélectionné
+        /// >>>>> 2.4.3 Création de la liste de dates  disponibles ("joursDiponibles") pour le mois sélectionné, en excluant les dimanches
         List<DateTime> joursDisponibles = new List<DateTime>();
 
         for (int jour = 1; jour <= nombreDeJoursDansMois; jour++)
         {
             DateTime date = new DateTime(anneeSelectionnee, moisSelectionne, jour);
+            if (date.DayOfWeek != DayOfWeek.Sunday) // Exclure les dimanches
+            {
+                joursDisponibles.Add(date);
+            }
             datesDuMois.Add(date);
-            joursDisponibles.Add(date);
         }
 
-
-        //Ces ViewBag permettrons d'afficher dans la vue l'année et le mois selectionnés ainsi que le nombre de jours dans ce mois spécifique
-        ViewBag.Annees = new SelectList(anneesDisponibles, anneeSelectionnee);
+            //Ces ViewBag permettrons d'afficher dans la vue l'année et le mois selectionnés ainsi que le nombre de jours dans ce mois spécifique
+            ViewBag.Annees = new SelectList(anneesDisponibles, anneeSelectionnee);
         ViewBag.Mois = new SelectList(moisDisponibles, moisSelectionne);
         ViewBag.NombreDeJoursDansMois = nombreDeJoursDansMois;
 
