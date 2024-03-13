@@ -27,22 +27,22 @@ void AddDefaultTokenProviders()
 // Add JwtBearer
 
 builder.Services.AddScoped<IAuthService, AuthService>();
-//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-//    .AddJwtBearer(options =>
-//    {
-//        options.TokenValidationParameters = new TokenValidationParameters
-//        {
-//            ValidateIssuer = false,
-//            ValidateAudience = false,
-//            RequireExpirationTime = true,
-//            ValidateLifetime = true,
-//            ValidateIssuerSigningKey = true,
-//            ValidIssuer = builder.Configuration.GetSection("JwtConfig:Issuer").Value,
-//            ValidAudience = builder.Configuration.GetSection("JwtConfig:Audience").Value,
-//            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
-//                .GetBytes(builder.Configuration.GetSection("JwtConfig:Secret").Value))
-//        };
-//    });
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            RequireExpirationTime = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration.GetSection("JwtConfig:Issuer").Value,
+            ValidAudience = builder.Configuration.GetSection("JwtConfig:Audience").Value,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
+                .GetBytes(builder.Configuration.GetSection("JwtConfig:Secret").Value))
+        };
+    });
 
 
 builder.Services.AddHttpClient();
