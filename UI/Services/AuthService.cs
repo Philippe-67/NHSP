@@ -109,14 +109,14 @@ namespace UI.Services
                     new Claim(ClaimTypes.Name, user.UserName),
                 };
 
-              //  var jwtToken = CreateToken(user, userRoles);
+                var jwtToken = CreateToken(user, userRoles);
 
                 foreach (var userRole in userRoles)
                 {
                     authClaims.Add(new Claim(ClaimTypes.Role, userRole));
                 }
 
-              //  status.Token = jwtToken;
+               status.Token = jwtToken;
                 status.StatusCode = 1;
                 status.StatusMessage = "Logged in successfully";
             }
