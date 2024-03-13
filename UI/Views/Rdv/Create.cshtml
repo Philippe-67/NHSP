@@ -1,12 +1,13 @@
 ﻿@model UI.Models.Rdv
 
-<h2>Créer un rendez-vous</h2>
-<p>Praticien ID: @ViewData["PraticienId"]</p>
-<p>Nom du Praticien: @ViewData["NomPraticien"]</p>
+<div style="margin: 0 auto; width: 50%;">
+    <h2 style="margin-top: 20px; margin-bottom: 20px;">Vous optez pour un rendez-vous en date du : @(((DateTime)ViewData["Date"]).ToString("dd/MM/yyyy"))</h2>
+@* <p>Praticien ID: @ViewData["PraticienId"]</p>
+<p>Nom du Praticien: @ViewData["NomPraticien"]</p> *@
 @* <p>jour disponible choisi :@ViewData["Date"]</p>
  *@
-<p>jour disponible choisi :@(((DateTime)ViewData["Date"]).ToString("dd/MM/yyyy"))</p>
-
+@* <p>jour disponible choisi :@(((DateTime)ViewData["Date"]).ToString("dd/MM/yyyy"))</p>
+ *@
 
 
 
@@ -41,3 +42,4 @@
         <button type="submit" class="btn btn-primary">Créer le rendez-vous</button>
     </div>
 </form>
+</div>

@@ -1,7 +1,7 @@
 ﻿@model UI.Models.Rdv
 
 @{
-    ViewData["Title"] = "Liste des rendez-vous disponibles avec le docteur " + @ViewData["NomPraticien"];
+    ViewData["Title"] = " Disponibilités du docteur " + @ViewData["NomPraticien"];
 }
 
 <h2 style="margin-top: 20px; margin-bottom: 20px;padding-left: 300px;">@ViewData["Title"]</h2>
@@ -13,11 +13,13 @@
         <input type="hidden" name="PraticienId" value="@ViewData["PraticienId"]">
         <input type="hidden" name="NomPraticien" value="@ViewData["NomPraticien"]">
 
-        <div style="display: flex; align-items: center;">
-            <label style="padding-left: 300px; width: 100px; color: black;" for="Annee">:</label>
+        <div>
+         @*    <label style="padding-left: 300px; width: 100px; color: black;" for="Annee">:</label> *@
+                <label style="color: black;" for="Annee">année:</label>
+
             @Html.DropDownList("annee", (SelectList)ViewBag.Annees, new { onchange = "this.form.submit()" })
 
-            <label style="padding-left: 10px;" for="Mois">Mois :</label>
+            <label  for="Mois">Mois :</label>
             @{
                 var currentMonth = DateTime.Now.Month;
                 var months = new[]
