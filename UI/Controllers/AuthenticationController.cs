@@ -48,14 +48,14 @@ namespace UI.Controllers
 
             var result = await _authService.LoginAsync(model);
 
-          //  var jwtToken = result.Token;
+           var jwtToken = result.Token;
 
-            if (result.StatusCode == 1)// && jwtToken != string.Empty)
+            if (result.StatusCode == 1 && jwtToken != string.Empty)
             {
                 // Ajoutez des messages de débogage
                 Console.WriteLine("Connexion réussie. Redirection vers la page d'accueil.");
 
-                return RedirectToAction("Index", "Home");//, new { token = jwtToken });
+                return RedirectToAction("Index", "Home", new { token = jwtToken });
             }
             else
             {

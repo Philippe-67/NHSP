@@ -15,7 +15,7 @@ public class RdvController : Controller
     public RdvController(IHttpClientFactory httpClientFactory)
     {
         _httpClient = httpClientFactory.CreateClient();
-        _httpClient.BaseAddress = new Uri("https://localhost:5001"); // Assurez-vous de mettre le bon port pour votre API Rdv
+        _httpClient.BaseAddress = new Uri("https://localhost:6001"); // Assurez-vous de mettre le bon port pour votre API Rdv
     }
 
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using UI.Models;
 
@@ -7,18 +8,24 @@ namespace UI.Controllers
     public class PraticienController : Controller
     {
         private readonly HttpClient _httpClient;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
 
-        public PraticienController(IHttpClientFactory httpClientFactory)
+
+        public PraticienController(IHttpClientFactory httpClientFactory, SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
         {
             _httpClient = httpClientFactory.CreateClient();
-            _httpClient.BaseAddress = new Uri("https://LocalHost:5000");
+            _httpClient.BaseAddress = new Uri("https://LocalHost:6001");
+            _signInManager = signInManager;
+            _userManager = userManager;
+
         }
 
-        // [Authorize]
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
-            try
-            {
+            //try
+           // {
                 HttpResponseMessage response = await _httpClient.GetAsync("/api/Praticien");
 
                 if (response.IsSuccessStatusCode)
@@ -35,11 +42,11 @@ namespace UI.Controllers
                 {
                     return StatusCode((int)response.StatusCode, $"Erreur HTTP: {response.StatusCode}");
                 }
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Erreur lors de la requête : {ex.Message}");
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    return StatusCode(500, $"Erreur lors de la requête : {ex.Message}");
+            //}
         }
     }
 }

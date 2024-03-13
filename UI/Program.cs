@@ -2,6 +2,9 @@ using UI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using UI.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,10 +15,35 @@ builder.Services.AddDbContext<UserDbContext>(options =>
 
 // Add identity
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-    .AddEntityFrameworkStores<UserDbContext>();
-// .AddDefaultTokenProviders();
+    .AddEntityFrameworkStores<UserDbContext>()
+    .AddDefaultTokenProviders();
+
+void AddDefaultTokenProviders()
+{
+    throw new NotImplementedException();
+}
+
+
+// Add JwtBearer
 
 builder.Services.AddScoped<IAuthService, AuthService>();
+//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+//    .AddJwtBearer(options =>
+//    {
+//        options.TokenValidationParameters = new TokenValidationParameters
+//        {
+//            ValidateIssuer = false,
+//            ValidateAudience = false,
+//            RequireExpirationTime = true,
+//            ValidateLifetime = true,
+//            ValidateIssuerSigningKey = true,
+//            ValidIssuer = builder.Configuration.GetSection("JwtConfig:Issuer").Value,
+//            ValidAudience = builder.Configuration.GetSection("JwtConfig:Audience").Value,
+//            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
+//                .GetBytes(builder.Configuration.GetSection("JwtConfig:Secret").Value))
+//        };
+//    });
+
 
 builder.Services.AddHttpClient();
 
