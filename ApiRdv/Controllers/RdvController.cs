@@ -1,8 +1,10 @@
 ﻿using ApiRdv.Data;
 using ApiRdv.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
+//[Authorize(Roles="admin")]
 [Route("api/[controller]")]
 [ApiController]
 public class RdvController : ControllerBase
@@ -35,15 +37,7 @@ public class RdvController : ControllerBase
 
         return rdv;
     }
-    //// POST: api/Rdv
-    //[HttpPost]
-    //public async Task<ActionResult<Rdv>> Create(Rdv rdv)
-    //{
-    //    _context.Rdvs.Add(rdv);
-    //    await _context.SaveChangesAsync();
-
-    //    return CreatedAtAction(nameof(GetRdv), new { id = rdv.Id }, rdv);
-    //}   remplacé par :
+    
     [HttpPost]
     public async Task<ActionResult<Rdv>> Create(Rdv rdv)
     {

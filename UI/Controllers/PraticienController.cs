@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 using UI.Models;
 
 namespace UI.Controllers
@@ -10,14 +12,15 @@ namespace UI.Controllers
         private readonly HttpClient _httpClient;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly IHttpContextAccessor _contextAccessor;
 
-
-        public PraticienController(IHttpClientFactory httpClientFactory, SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
+        public PraticienController(IHttpClientFactory httpClientFactory, SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager, IHttpContextAccessor contextAccessor)
         {
             _httpClient = httpClientFactory.CreateClient();
             _httpClient.BaseAddress = new Uri("https://LocalHost:6001");
             _signInManager = signInManager;
             _userManager = userManager;
+            _contextAccessor = contextAccessor;
 
         }
 
@@ -25,8 +28,12 @@ namespace UI.Controllers
         public async Task<IActionResult> Index()
         {
             //try
-           // {
-                HttpResponseMessage response = await _httpClient.GetAsync("/api/Praticien");
+            // {
+            // Récupération du  jeton JWT de la session HTTP stocker dans la méthode Login de AuthenticationController.cs
+            var token = _contextAccessor.HttpContext.Session.GetString("token");
+            // Ajouter le jeton JWT dans l'en-tête d'autorisation de votre HttpClient
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            HttpResponseMessage response = await _httpClient.GetAsync("/api/Praticien");
 
                 if (response.IsSuccessStatusCode)
                 {

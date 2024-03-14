@@ -23,7 +23,7 @@
       }
     ],
     //"AuthenticationOptions": {
-    //  "AuthenticationProviderKey": [ "Bearer", "Secret" ]
+    //  "AuthenticationProviderKey": [ "Bearer" ]
     //},
     "UpstreamHttpMethod": [ "Get", "Post" ]
 

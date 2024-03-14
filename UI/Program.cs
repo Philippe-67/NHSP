@@ -13,22 +13,18 @@ var connectionString = builder.Configuration.GetConnectionString("UserConnection
 builder.Services.AddDbContext<UserDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-// Add identity
+// Add identitypour configurer l'infrastructure d'authentification et d'autorisation basé sur les rôles et les users
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<UserDbContext>()
-    .AddDefaultTokenProviders();
-
-void AddDefaultTokenProviders()
-{
-    throw new NotImplementedException();
-}
+    .AddDefaultTokenProviders();//--> fournisseur de jetons
 
 
-// Add JwtBearer
 
 builder.Services.AddScoped<IAuthService, AuthService>();
+
+//configure l'authentification basée sur les jetons JWT (JSON Web Tokens) en utilisant le schéma d'authentification JWTBearer.
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
+       .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
@@ -44,10 +40,18 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-
+//--> ajoute le client HTTP dans le conteneur d'injection de dépendances, ce qui permet à votre application de faire des requêtes HTTP.
 builder.Services.AddHttpClient();
 
-// Add services to the container.
+//-->ajoute la prise en charge de la session dans votre application, ce qui permet de stocker des données de session utilisateur entre les requêtes HTTP.
+builder.Services.AddSession();
+
+//ajoute un accesseur pour accéder à l'objet HttpContext dans votre application, ce qui permet d'accéder à des informations
+//spécifiques à la requête HTTP en cours.
+builder.Services.AddHttpContextAccessor();
+
+///ajoute le support pour les contrôleurs MVC avec les vues dans votre application, ce qui permet de créer des routes 
+///et de gérer les requêtes HTTP entrantes en fonction des actions des contrôleurs.
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -64,6 +68,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseSession();//necessaire
+
 
 app.UseAuthentication();
 app.UseAuthorization();

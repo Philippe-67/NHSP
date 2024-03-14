@@ -1,16 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using UI.Models;
 using UI.Services;
-
+using System.Net.Http.Headers;
 namespace UI.Controllers
 {
     public class AuthenticationController : Controller
     {
         private readonly IAuthService _authService;
+        private readonly IHttpContextAccessor _contextAccessor;
 
-        public AuthenticationController(IAuthService authService)
-        {
+        public AuthenticationController(IAuthService authService,IHttpContextAccessor contextAccessor)
+        { 
             _authService = authService;
+            _contextAccessor = contextAccessor;
         } 
 
         public IActionResult Register()
@@ -54,6 +56,8 @@ namespace UI.Controllers
             {
                 // Ajoutez des messages de débogage
                 Console.WriteLine("Connexion réussie. Redirection vers la page d'accueil.");
+                // Stockage (SetString) du jeton JWT dans la session HTTP à l'aide de IHttpContextAccessor mis en place dans le contructeur
+                _contextAccessor.HttpContext.Session.SetString("token", jwtToken);
 
                 return RedirectToAction("Index", "Home", new { token = jwtToken });
             }

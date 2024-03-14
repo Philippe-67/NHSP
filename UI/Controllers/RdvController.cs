@@ -1,27 +1,37 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 using UI.Models;
 
 
-
+//[Authorize(Roles = "admin")]
 public class RdvController : Controller
 {
     private readonly HttpClient _httpClient;
+    private readonly UserManager<IdentityUser> _userManager;
+    private readonly SignInManager<IdentityUser> _signInManager;
+    private readonly IHttpContextAccessor _contextAccessor;
 
-
-    public RdvController(IHttpClientFactory httpClientFactory)
+    
+    public RdvController(IHttpClientFactory httpClientFactory, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IHttpContextAccessor contextAccessor)
     {
         _httpClient = httpClientFactory.CreateClient();
         _httpClient.BaseAddress = new Uri("https://localhost:6001"); // Assurez-vous de mettre le bon port pour votre API Rdv
+        _userManager = userManager;
+        _signInManager = signInManager;
+        _contextAccessor = contextAccessor;
+
     }
 
-
+    [HttpGet]
     public async Task<IActionResult> Index(string nomPraticien, int praticienId, DateTime jourDisponible, int? annee, int? mois)
     //  public async Task<IActionResult> Index(int? praticienId, DateTime jourDisponible, int? annee, int? mois)
     {
+
         /// 1 Création d'un dictionnaire pour transmettre des données à la cue
         ViewData["NomPraticien"] = nomPraticien;
         ViewData["PraticienId"] = praticienId;
@@ -63,16 +73,22 @@ public class RdvController : Controller
             datesDuMois.Add(date);
         }
 
-            //Ces ViewBag permettrons d'afficher dans la vue l'année et le mois selectionnés ainsi que le nombre de jours dans ce mois spécifique
-            ViewBag.Annees = new SelectList(anneesDisponibles, anneeSelectionnee);
+        //Ces ViewBag permettrons d'afficher dans la vue l'année et le mois selectionnés ainsi que le nombre de jours dans ce mois spécifique
+        ViewBag.Annees = new SelectList(anneesDisponibles, anneeSelectionnee);
         ViewBag.Mois = new SelectList(moisDisponibles, moisSelectionne);
         ViewBag.NombreDeJoursDansMois = nombreDeJoursDansMois;
 
 
 
-        try
+        //try
         {
+            // Récupération du  jeton JWT de la session HTTP stocker dans la méthode Login de AuthenticationController.cs
+            var token = _contextAccessor.HttpContext.Session.GetString("token");
+         
+            // Ajouter le jeton JWT dans l'en-tête d'autorisation de votre HttpClient
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             HttpResponseMessage response = await _httpClient.GetAsync("/api/Rdv");
+            //var response = await _httpClient.GetAsync("/api/Rdv");
 
             if (response.IsSuccessStatusCode)
             {
@@ -108,24 +124,17 @@ public class RdvController : Controller
                 return StatusCode((int)response.StatusCode, $"Erreur HTTP: {response.StatusCode}");
             }
         }
-        catch (Exception ex)
-        {
-            return StatusCode(500, $"Erreur lors de la requête : {ex.Message}");
-        }
+        //catch (Exception ex)
+        //{
+        //    return StatusCode(500, $"Erreur lors de la requête : {ex.Message}");
+        //}
     }
     private bool EstBissextile(int annee)
     {
         return (annee % 4 == 0 && annee % 100 != 0) || (annee % 400 == 0);
     }
 
-    //public IActionResult Create(int praticienId, string nomPraticien)
-
-    //{
-    //    ViewData["PraticienId"] = praticienId;
-    //    ViewData["NomPraticien"] = nomPraticien;
-    //    // Affiche le formulaire de création de rendez-vous
-    //    return View();
-    //}
+   
 
     public IActionResult Create(DateTime jourDisponible, int praticienId, string nomPraticien)
 
@@ -145,6 +154,9 @@ public class RdvController : Controller
 
         try
         {
+            // Formate la date au format jj/mm/yy
+            string formattedDate = rdv.Date.ToString("dd/MM/yyyy");
+
             await CreateRendezVousAsync(rdv);
             // Crée un objet de type UI.Models.Rdv avec les données nécessaires
             UI.Models.Rdv model = new UI.Models.Rdv
@@ -154,7 +166,7 @@ public class RdvController : Controller
                 Date = rdv.Date
             };
             // Ajoutez le message de confirmation à TempData
-            TempData["ConfirmationMessage"] = $"Votre rendez-vous du {model.Date} avec le docteur  {model.NomPraticien}, a été enregistré avec succès.";
+            TempData["ConfirmationMessage"] = $"Votre rendez-vous du {formattedDate} avec le docteur  {model.NomPraticien}, a été enregistré avec succès.";
 
             // Redirige vers l'action "Index" avec le modèle correct
             return RedirectToAction("Index", model);
