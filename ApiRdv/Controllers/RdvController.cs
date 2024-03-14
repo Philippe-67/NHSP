@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore;
 public class RdvController : ControllerBase
 {
     private readonly RdvDbContext _context;
-    //private static SemaphoreSlim _reservationSemaphore = new SemaphoreSlim(200, 200);
-    //private static SemaphoreSlim _doubleBookingSemaphore = new SemaphoreSlim(1, 1);
+    private static SemaphoreSlim _reservationSemaphore = new SemaphoreSlim(200, 200);
+    private static SemaphoreSlim _doubleBookingSemaphore = new SemaphoreSlim(1, 1);
 
     public RdvController(RdvDbContext context)
     {
@@ -41,8 +41,8 @@ public class RdvController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Rdv>> Create(Rdv rdv)
     {
-        //await _reservationSemaphore.WaitAsync();
-        //await _doubleBookingSemaphore.WaitAsync();
+        await _reservationSemaphore.WaitAsync();
+        await _doubleBookingSemaphore.WaitAsync();
 
         try
         {
@@ -50,7 +50,7 @@ public class RdvController : ControllerBase
             //// Logique de réservation (vérification de disponibilité, etc.)
             if (!IsDayAvailable(rdv.Date, rdv.NomPraticien))
             {
-                return BadRequest("La journée spécifiée n'est pas disponible pour la réservation.");
+                return BadRequest("La journée spécifiée n'est plus disponible pour la réservation.");
             }
 
             // Simulation d'une opération prenant moins d'une minute
@@ -63,8 +63,8 @@ public class RdvController : ControllerBase
         }
         finally
         {
-            //_doubleBookingSemaphore.Release();
-            //_reservationSemaphore.Release();
+            _doubleBookingSemaphore.Release();
+            _reservationSemaphore.Release();
         }
     }
     private bool IsDayAvailable(DateTime date, string nomPraticien)
@@ -103,7 +103,7 @@ public class RdvController : ControllerBase
             return NotFound();
         }
 
-    //    await _reservationSemaphore.WaitAsync();
+       await _reservationSemaphore.WaitAsync();
 
         try
         {
@@ -112,7 +112,7 @@ public class RdvController : ControllerBase
         }
         finally
         {
-           // _reservationSemaphore.Release();
+            _reservationSemaphore.Release();
         }
 
         return NoContent();

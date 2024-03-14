@@ -32,7 +32,7 @@ public class RdvController : Controller
     //  public async Task<IActionResult> Index(int? praticienId, DateTime jourDisponible, int? annee, int? mois)
     {
 
-        /// 1 Création d'un dictionnaire pour transmettre des données à la cue
+        /// 1 Création d'un dictionnaire pour transmettre des données à la vue
         ViewData["NomPraticien"] = nomPraticien;
         ViewData["PraticienId"] = praticienId;
         ViewData["Date"] = jourDisponible;
@@ -72,8 +72,7 @@ public class RdvController : Controller
             }
             datesDuMois.Add(date);
         }
-
-        //Ces ViewBag permettrons d'afficher dans la vue l'année et le mois selectionnés ainsi que le nombre de jours dans ce mois spécifique
+        //Ces ViewBags permettrons d'afficher dans la vue l'année et le mois selectionné ainsi que le nombre de jours dans ce mois spécifique
         ViewBag.Annees = new SelectList(anneesDisponibles, anneeSelectionnee);
         ViewBag.Mois = new SelectList(moisDisponibles, moisSelectionne);
         ViewBag.NombreDeJoursDansMois = nombreDeJoursDansMois;
@@ -107,7 +106,7 @@ public class RdvController : Controller
                 // Trier les rendez-vous par ordre chronologique
                 listeRdvs = listeRdvs.OrderBy(rdv => rdv.Date).ToList();
 
-                // Filtrer les jours disponibles en fonction des rendez-vous
+                // filtre les dates disponibles en retirant celles qui correspondent aux dates des rendez-vous.
                 joursDisponibles = joursDisponibles.Except(listeRdvs.Select(rdv => rdv.Date.Date)).ToList();
 
                 // Utilise les données comme nécessaire, peut-être passer à la vue
