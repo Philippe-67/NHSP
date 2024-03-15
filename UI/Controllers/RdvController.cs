@@ -8,7 +8,7 @@ using System.Net.Http.Headers;
 using UI.Models;
 
 
-//[Authorize(Roles = "admin")]
+[Authorize(Roles = "admin")]
 public class RdvController : Controller
 {
     private readonly HttpClient _httpClient;
