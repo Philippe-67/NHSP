@@ -14,7 +14,7 @@
         <input type="hidden" name="NomPraticien" value="@ViewData["NomPraticien"]">
 
         <div>
-         @*    <label style="padding-left: 300px; width: 100px; color: black;" for="Annee">:</label> *@
+        
                 <label style="color: black;" for="Annee">année:</label>
 
             @Html.DropDownList("annee", (SelectList)ViewBag.Annees, new { onchange = "this.form.submit()" })
@@ -49,13 +49,13 @@
 <div style="margin: 0 auto; width: 50%;">
     <h3>Jours disponibles :</h3>
 <table class="table">
-    <thead>
+   @*  <thead>
         <tr>
             <th>Jour</th>
             <th>Date</th>
             <th>Action</th>
         </tr>
-    </thead>
+    </thead> *@
     <tbody>
         @foreach (var jourDisponible in ViewBag.JoursDisponibles)
         {

@@ -3,33 +3,16 @@
 @{
     ViewData["Title"] = "Liste des Praticiens:";
 }
+<style>
+    #pageBody {
+        scroll-behavior: smooth;
+        scroll-margin-bottom: 800px; /* Ajustez cette valeur selon vos besoins */
+    }
+</style>
 
 <h2 style="margin-top: 20px; margin-bottom: 20px;padding-left: 300px;">@ViewData["Title"]</h2>
 
-@*<table class="table">
-    <thead>
-        <tr>
-            <th style="padding-left: 600px;width: 50px; color: black;">Nom du Praticien</th>
-            <th style="padding-left: 500;width: 50px; color: black;">Specialité</th>
-            <th style="padding-left: 40px;width: 50px; color: black;">Action</th> <!-- Nouvelle colonne pour le bouton -->
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var praticien in ViewBag.Praticiens)
-        {
-            <tr>
-                <td style="padding-left: 600px;width: 50px; color: black;"> docteur @praticien.NomPraticien</td>
-                <td style="padding-right: 50px;width: 50px; color: black;">@praticien.Specialite</td>
-                <td>
-                    <div style="margin-right: 70px;">
-                        <a href="@Url.Action("Index", "Rdv", new { praticienId = praticien.Id, nomPraticien = praticien.NomPraticien })" class="btn btn-primary">agenda</a>
-                    </div>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
- *@
+ 
 <div style="margin: 0 auto; width: 50%;">
     <table class="table">
         <thead>

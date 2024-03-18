@@ -7,7 +7,7 @@ using UI.Models;
 
 namespace UI.Controllers
 {
-    [Authorize(Roles = "praticien,admin")]
+   // [Authorize(Roles = "praticien,admin")]
     public class PraticienController : Controller
     {
         private readonly HttpClient _httpClient;

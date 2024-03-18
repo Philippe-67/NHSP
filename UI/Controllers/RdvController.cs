@@ -8,7 +8,7 @@ using System.Net.Http.Headers;
 using UI.Models;
 
 
-[Authorize(Roles = "admin")]
+//[Authorize(Roles = "admin")]
 public class RdvController : Controller
 {
     private readonly HttpClient _httpClient;
@@ -133,8 +133,8 @@ public class RdvController : Controller
         return (annee % 4 == 0 && annee % 100 != 0) || (annee % 400 == 0);
     }
 
-   
 
+    [HttpGet]
     public IActionResult Create(DateTime jourDisponible, int praticienId, string nomPraticien)
 
     {
@@ -148,7 +148,7 @@ public class RdvController : Controller
     //  [Authorize (Roles ="praticien")]
     [HttpPost]
 
-    public async Task<IActionResult> Create(Rdv rdv)
+    public async Task<IActionResult> Create( Rdv rdv)
     {
 
         try
@@ -161,8 +161,9 @@ public class RdvController : Controller
             UI.Models.Rdv model = new UI.Models.Rdv
             {
                 NomPraticien = rdv.NomPraticien,
-                Id = rdv.Id,
-                Date = rdv.Date
+             //   Id = rdv.Id,
+                Date = rdv.Date,
+                NomPatient= rdv.NomPatient,
             };
             // Ajoutez le message de confirmation à TempData
             TempData["ConfirmationMessage"] = $"Votre rendez-vous du {formattedDate} avec le docteur  {model.NomPraticien}, a été enregistré avec succès.";

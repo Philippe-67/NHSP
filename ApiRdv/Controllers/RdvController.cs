@@ -54,7 +54,7 @@ public class RdvController : ControllerBase
             }
 
             // Simulation d'une opération prenant moins d'une minute
-            await Task.Delay(TimeSpan.FromSeconds(1));
+            await Task.Delay(TimeSpan.FromSeconds(30));
 
             _context.Rdvs.Add(rdv);
             await _context.SaveChangesAsync();
