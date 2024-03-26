@@ -1,18 +1,36 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using UI.Models;
 using UI.Services;
+using System.Text;
+
 using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 namespace UI.Controllers
 {
     public class AuthenticationController : Controller
     {
         private readonly IAuthService _authService;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IHttpContextAccessor _contextAccessor;
+        private readonly ILogger<AuthenticationController> _logger;
 
-        public AuthenticationController(IAuthService authService,IHttpContextAccessor contextAccessor)
-        { 
+        public AuthenticationController(
+            UserManager<IdentityUser> userManager,
+            RoleManager<IdentityRole> roleManager,
+          //  IConfiguration configuration,
+            IAuthService authService,
+            IHttpContextAccessor contextAccessor,
+            ILogger<AuthenticationController> logger)
+        {
+
+            _userManager = userManager;
+            _roleManager = roleManager;
+         //   _configuration = configuration; 
             _authService = authService;
             _contextAccessor = contextAccessor;
+            _logger = logger;
         } 
 
         public IActionResult Register()
@@ -24,6 +42,8 @@ namespace UI.Controllers
        // public async Task<IActionResult> RegisterAsync([FromBody] Register model)
           public async Task<IActionResult> RegisterAsync( Register model)
         {
+
+            _logger.LogInformation($"Tentative d'inscription ");
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -43,6 +63,7 @@ namespace UI.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(Login model)
         {
+            _logger.LogInformation($"Tentative de connexion pour l'utilisateur de login");
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -55,7 +76,7 @@ namespace UI.Controllers
             if (result.StatusCode == 1 && jwtToken != string.Empty)
             {
                 // Ajoutez des messages de débogage
-                Console.WriteLine("Connexion réussie. Redirection vers la page d'accueil.");
+                _logger.LogInformation($"Utilisateur  authentifié avec succès : {model.Email}");
                 // Stockage (SetString) du jeton JWT dans la session HTTP à l'aide de IHttpContextAccessor mis en place dans le contructeur
                 _contextAccessor.HttpContext.Session.SetString("token", jwtToken);
 

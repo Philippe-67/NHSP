@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using UI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -40,10 +41,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-//--> ajoute le client HTTP dans le conteneur d'injection de dépendances, ce qui permet à votre application de faire des requêtes HTTP.
+//--> ajoute le client HTTP dans le conteneur d'injection de dépendances, ce qui permet à l' application de faire des requêtes HTTP.
 builder.Services.AddHttpClient();
 
-//-->ajoute la prise en charge de la session dans votre application, ce qui permet de stocker des données de session utilisateur entre les requêtes HTTP.
+//-->ajoute la prise en charge de la session dans l' application, ce qui permet de stocker des données de session utilisateur entre les requêtes HTTP.
 builder.Services.AddSession();
 
 //ajoute un accesseur pour accéder à l'objet HttpContext dans votre application, ce qui permet d'accéder à des informations
@@ -53,6 +54,14 @@ builder.Services.AddHttpContextAccessor();
 ///ajoute le support pour les contrôleurs MVC avec les vues dans votre application, ce qui permet de créer des routes 
 ///et de gérer les requêtes HTTP entrantes en fonction des actions des contrôleurs.
 builder.Services.AddControllersWithViews();
+
+//configuration des logs
+var configuration = builder.Configuration;
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(configuration)
+    .WriteTo.Console()
+    .CreateLogger();
+
 
 var app = builder.Build();
 
@@ -70,14 +79,12 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseSession();//necessaire
-
-
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-//pattern: "{controller=Authentication}/{action=login}/{id?}");
+//pattern: "{controller=Authentication}/{action=login}/{id?}");//ouvre l'application sur la page de login
 
 app.Run();

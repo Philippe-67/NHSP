@@ -28,13 +28,13 @@ namespace UI.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            //try
-            // {
-            // Récupération du  jeton JWT de la session HTTP stocker dans la méthode Login de AuthenticationController.cs
-            var token = _contextAccessor.HttpContext.Session.GetString("token");
-            // Ajouter le jeton JWT dans l'en-tête d'autorisation de votre HttpClient
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            HttpResponseMessage response = await _httpClient.GetAsync("/api/Praticien");
+            try
+            {
+                // Récupération du  jeton JWT de la session HTTP stocker dans la méthode Login de AuthenticationController.cs
+                var token = _contextAccessor.HttpContext.Session.GetString("token");
+                // Ajouter le jeton JWT dans l'en-tête d'autorisation de votre HttpClient
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                HttpResponseMessage response = await _httpClient.GetAsync("/api/Praticien");
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -50,11 +50,43 @@ namespace UI.Controllers
                 {
                     return StatusCode((int)response.StatusCode, $"Erreur HTTP: {response.StatusCode}");
                 }
-            //}
-            //catch (Exception ex)
-            //{
-            //    return StatusCode(500, $"Erreur lors de la requête : {ex.Message}");
-            //}
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erreur lors de la requête : {ex.Message}");
+            }
         }
+            [HttpGet]
+            public async Task<IActionResult> IndexAdmin()
+            {
+                try
+                {
+                    // Récupération du  jeton JWT de la session HTTP stocker dans la méthode Login de AuthenticationController.cs
+                    var token = _contextAccessor.HttpContext.Session.GetString("token");
+                    // Ajouter le jeton JWT dans l'en-tête d'autorisation de votre HttpClient
+                    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                    HttpResponseMessage response = await _httpClient.GetAsync("/api/Praticien");
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        // Lecture et traitement des données
+                        string responseData = await response.Content.ReadAsStringAsync();
+                        // Désérialise la chaîne JSON en une liste d'objets
+                        var praticiens = JsonConvert.DeserializeObject<List<Praticien>>(responseData);
+                        // Utilise les données comme nécessaire, peut-être passer à la vue
+                        ViewBag.Praticiens = praticiens;
+                        return View();
+                    }
+                    else
+                    {
+                        return StatusCode((int)response.StatusCode, $"Erreur HTTP: {response.StatusCode}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(500, $"Erreur lors de la requête : {ex.Message}");
+                }
+            }
     }
 }
+

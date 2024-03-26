@@ -4,27 +4,35 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using System.Data;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using UI.Models;
 
 
-//[Authorize(Roles = "admin")]
+[Authorize(Roles = "admin")]
 public class RdvController : Controller
 {
     private readonly HttpClient _httpClient;
     private readonly UserManager<IdentityUser> _userManager;
     private readonly SignInManager<IdentityUser> _signInManager;
     private readonly IHttpContextAccessor _contextAccessor;
+    private readonly ILogger<RdvController> _logger;
 
-    
-    public RdvController(IHttpClientFactory httpClientFactory, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IHttpContextAccessor contextAccessor)
+
+    public RdvController(
+        IHttpClientFactory httpClientFactory,
+        UserManager<IdentityUser> userManager,
+        SignInManager<IdentityUser> signInManager,
+        IHttpContextAccessor contextAccessor,
+        ILogger<RdvController> logger)
     {
         _httpClient = httpClientFactory.CreateClient();
         _httpClient.BaseAddress = new Uri("https://localhost:6001"); // Assurez-vous de mettre le bon port pour votre API Rdv
         _userManager = userManager;
         _signInManager = signInManager;
         _contextAccessor = contextAccessor;
-
+        _logger = logger;
     }
 
     [HttpGet]
@@ -83,7 +91,7 @@ public class RdvController : Controller
         {
             // Récupération du  jeton JWT de la session HTTP stocker dans la méthode Login de AuthenticationController.cs
             var token = _contextAccessor.HttpContext.Session.GetString("token");
-         
+
             // Ajouter le jeton JWT dans l'en-tête d'autorisation de votre HttpClient
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             HttpResponseMessage response = await _httpClient.GetAsync("/api/Rdv");
@@ -122,13 +130,16 @@ public class RdvController : Controller
             {
                 return StatusCode((int)response.StatusCode, $"Erreur HTTP: {response.StatusCode}");
             }
+
+            //catch (Exception ex)
+            //{
+            //    return StatusCode(500, $"Erreur lors de la requête : {ex.Message}");
+            //}
         }
-        //catch (Exception ex)
-        //{
-        //    return StatusCode(500, $"Erreur lors de la requête : {ex.Message}");
-        //}
     }
-    private bool EstBissextile(int annee)
+        
+
+        private bool EstBissextile(int annee)
     {
         return (annee % 4 == 0 && annee % 100 != 0) || (annee % 400 == 0);
     }
@@ -148,7 +159,7 @@ public class RdvController : Controller
     //  [Authorize (Roles ="praticien")]
     [HttpPost]
 
-    public async Task<IActionResult> Create( Rdv rdv)
+    public async Task<IActionResult> Create(Rdv rdv)
     {
 
         try
@@ -161,16 +172,16 @@ public class RdvController : Controller
             UI.Models.Rdv model = new UI.Models.Rdv
             {
                 NomPraticien = rdv.NomPraticien,
-             //   Id = rdv.Id,
+                //   Id = rdv.Id,
                 Date = rdv.Date,
-                NomPatient= rdv.NomPatient,
+                NomPatient = rdv.NomPatient,
             };
             // Ajoutez le message de confirmation à TempData
             TempData["ConfirmationMessage"] = $"Votre rendez-vous du {formattedDate} avec le docteur  {model.NomPraticien}, a été enregistré avec succès.";
 
             // Redirige vers l'action "Index" avec le modèle correct
             return RedirectToAction("Index", model);
-          
+
         }
         catch (Exception ex)
         {
@@ -178,20 +189,145 @@ public class RdvController : Controller
 
         }
     }
-    // Ajoutez d'autres actions selon les besoins de votre application
+    //public async Task<List<Rdv>> GetRdvsAsync()
+    //{
+    //    var response = await _httpClient.GetAsync("api/Rdv");
+    //    response.EnsureSuccessStatusCode();
 
-    private async Task CreateRendezVousAsync(Rdv rdv)
+    //    var rdvs = await response.Content.ReadAsAsync<List<Rdv>>();
+    //    return rdvs;
+    //}
+    // public async Task<List<Rdv>> GetRdvsAsync()
+    //public async Task<List<Rdv>> ListeDesRdv(int praticienId, string nomPraticien,string nomPatient, DateTime date)
+
+    //{
+    //    ViewData["PraticienId"] = praticienId;
+    //    ViewData["NomPraticien"] = nomPraticien;
+    //    ViewData["NomPatient"] = nomPatient;
+    //    ViewData["DateTime"] = date;
+    //    HttpResponseMessage response = await _httpClient.GetAsync("/api/Rdv");
+
+    //    if (response.IsSuccessStatusCode)
+    //    {
+
+    //        string responseData = await response.Content.ReadAsStringAsync();
+    //        var listeRdvs = JsonConvert.DeserializeObject<List<Rdv>>(responseData);
+
+    //        // Filtrer les rendez-vous en fonction de nomPraticien
+    //        if (!string.IsNullOrEmpty(nomPraticien))
+    //        {
+    //            listeRdvs = listeRdvs.Where(rdv => rdv.NomPraticien == nomPraticien).ToList();
+    //        }
+    //        // Filtrer les rendez-vous en fonction de praticienId s'il est spécifié
+
+    //        // Trier les rendez-vous par ordre chronologique
+    //        listeRdvs = listeRdvs.OrderBy(rdv => rdv.Date).ToList();
+
+
+    //        // Utilise les données comme nécessaire, peut-être passer à la vue
+    //      //  ViewBag.Rdvs = listeRdvs;
+
+
+
+
+    //        return View(listeRdvs);
+
+    //        //var response = await _httpClient.GetAsync("api/Rdv");
+    //        //response.EnsureSuccessStatusCode();
+
+    //        //var View = await response.Content.ReadAsAsync<List<Rdv>>();
+    //        //return View;
+    //    }
+    public async Task<IActionResult> ListeDesRdv(int praticienId, string nomPraticien, string nomPatient, DateTime date)
     {
-        var response = await _httpClient.PostAsJsonAsync("api/Rdv", rdv); // Assurez-vous que l'URL est correcte
+        ViewData["PraticienId"] = praticienId;
+        ViewData["NomPraticien"] = nomPraticien;
+        ViewData["NomPatient"] = nomPatient;
+        ViewData["DateTime"] = date;
 
-        if (!response.IsSuccessStatusCode)
+        try
         {
-            var errorMessage = await response.Content.ReadAsStringAsync();
-            throw new Exception(errorMessage);
+            HttpResponseMessage response = await _httpClient.GetAsync("/api/Rdv");
+
+            if (response.IsSuccessStatusCode)
+            {
+                string responseData = await response.Content.ReadAsStringAsync();
+                var listeRdvs = JsonConvert.DeserializeObject<List<Rdv>>(responseData);
+
+                // Filtrer les rendez-vous en fonction de nomPraticien
+                if (!string.IsNullOrEmpty(nomPraticien))
+                {
+                    listeRdvs = listeRdvs.Where(rdv => rdv.NomPraticien == nomPraticien).ToList();
+                }
+                // Autres filtres en fonction des autres paramètres
+
+                // Trier les rendez-vous par ordre chronologique
+                listeRdvs = listeRdvs.OrderBy(rdv => rdv.Date).ToList();
+                listeRdvs=listeRdvs.Where(rdv=>rdv.Date.Date >= DateTime.Today.Date).ToList();
+                // Passer les données à la vue
+                return View(listeRdvs);
+            }
+            else
+            {
+                // Gérer le cas où la réponse n'est pas un succès
+                // Peut-être renvoyer une vue d'erreur ou afficher un message à l'utilisateur
+                return View("Error");
+            }
+        }
+        catch (Exception ex)
+        {
+            // Gérer les exceptions
+            // Peut-être renvoyer une vue d'erreur ou afficher un message à l'utilisateur
+            return View("Error");
         }
     }
 
+    public async Task CreateRendezVousAsync(Rdv rdv)
+    {
+        var response = await _httpClient.PostAsJsonAsync("api/Rdv", rdv); // Assurez-vous que l'URL est correcte
+        _logger.LogInformation($"création d'un rdv pour {rdv.NomPatient}");
+        if (!response.IsSuccessStatusCode)
+        {
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            _logger.LogInformation("Rendez-vous non créé");
+
+            throw new Exception(errorMessage);
+
+        }
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Delete(int id)
+    {
+        try
+        {
+            // Récupération du jeton JWT de la session HTTP stocké dans la méthode Login de AuthenticationController.cs
+            var token = _contextAccessor.HttpContext.Session.GetString("token");
+
+            // Ajouter le jeton JWT dans l'en-tête d'autorisation de votre HttpClient
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            // Envoi de la requête DELETE à l'API pour supprimer le rendez-vous avec l'ID spécifié
+            HttpResponseMessage response = await _httpClient.DeleteAsync($"/api/Rdv/{id}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                // Redirection vers l'action "Index" après la suppression
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                // Si la suppression échoue, retourner une erreur avec le code de statut HTTP
+                return StatusCode((int)response.StatusCode, $"Erreur HTTP lors de la suppression : {response.StatusCode}");
+            }
+        }
+        catch (Exception ex)
+        {
+            // En cas d'erreur, retourner une réponse avec le code de statut HTTP 500 (Erreur interne du serveur) et le message d'erreur
+            return StatusCode(500, $"Erreur lors de la suppression du rendez-vous : {ex.Message}");
+        }
+    }
+
+
 }
-
-
 

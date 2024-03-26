@@ -1,4 +1,4 @@
-﻿@model UI.Models.Rdv
+﻿@* @model UI.Models.Rdv
 
 @{
     ViewData["Title"] = " Disponibilités du docteur " + @ViewData["NomPraticien"];
@@ -6,7 +6,7 @@
 
 <h2 style="margin-top: 20px; margin-bottom: 20px;padding-left: 300px;">@ViewData["Title"]</h2>
 
-@* <p>Filtre par Nom du Praticien: @ViewData["NomPraticien"]</p> *@
+@* <p>Filtre par Nom du Praticien: @ViewData["NomPraticien"]</p> *
     <div style="margin: 0 auto; width: 50%;">
 <h3>
     <form method="get" asp-action="Index">
@@ -55,7 +55,7 @@
             <th>Date</th>
             <th>Action</th>
         </tr>
-    </thead> *@
+    </thead> 
     <tbody>
         @foreach (var jourDisponible in ViewBag.JoursDisponibles)
         {
@@ -81,4 +81,87 @@
         </div>
     }
 </table>
+</div> *@
+@model UI.Models.Rdv
+
+@{
+    ViewData["Title"] = " Disponibilités du docteur " + @ViewData["NomPraticien"];
+}
+
+<div id="pageContent">
+    <h2 style="margin-top: 20px; margin-bottom: 20px;padding-left: 300px;">@ViewData["Title"]</h2>
+
+    <div style="margin: 0 auto; width: 50%;">
+        <h3>
+            <form method="get" asp-action="Index">
+                <input type="hidden" name="PraticienId" value="@ViewData["PraticienId"]">
+                <input type="hidden" name="NomPraticien" value="@ViewData["NomPraticien"]">
+
+                <div>
+
+                    <label style="color: black;" for="Annee">année:</label>
+
+                    @Html.DropDownList("annee", (SelectList)ViewBag.Annees, new { onchange = "this.form.submit()" })
+
+                    <label for="Mois">Mois :</label>
+                    @{
+                        var currentMonth = DateTime.Now.Month;
+                        var months = new[]
+                        {
+                    new SelectListItem { Value = "1", Text = "Janvier" },
+                    new SelectListItem { Value = "2", Text = "Février" },
+                    new SelectListItem { Value = "3", Text = "Mars" },
+                    new SelectListItem { Value = "4", Text = "Avril" },
+                    new SelectListItem { Value = "5", Text = "Mai" },
+                    new SelectListItem { Value = "6", Text = "Juin" },
+                    new SelectListItem { Value = "7", Text = "Juillet" },
+                    new SelectListItem { Value = "8", Text = "Août" },
+                    new SelectListItem { Value = "9", Text = "Septembre" },
+                    new SelectListItem { Value = "10", Text = "Octobre" },
+                    new SelectListItem { Value = "11", Text = "Novembre" },
+                    new SelectListItem { Value = "12", Text = "Décembre" }
+                    };
+                        var selectedMonth = currentMonth.ToString();
+                    }
+                    @Html.DropDownList("mois", new SelectList(months, "Value", "Text", selectedMonth), new { onchange = "this.form.submit()" })
+                </div>
+
+            </form>
+        </h3>
+
+        <div style="margin: 0 auto; width: 50%;">
+            <h3>Jours disponibles :</h3>
+            <table class="table">
+                <tbody>
+                    @foreach (var jourDisponible in ViewBag.JoursDisponibles)
+                    {
+                        if (jourDisponible >= DateTime.Now.Date)
+                        {
+                            <tr>
+                                <td>@jourDisponible.ToString("dddd")</td> <!-- Affiche le nom du jour -->
+                                <td>@jourDisponible.ToString("dd/MM/yyyy")</td> <!-- Affiche la date -->
+                                <td>
+                                    <a href="@Url.Action("Create", "Rdv", new { jourDisponible = @jourDisponible, praticienId = @ViewData["PraticienId"], nomPraticien = @ViewData["NomPraticien"] })" class="btn btn-primary">Prendre un rendez-vous</a>
+
+                                </td>
+                            </tr>
+                        }
+
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
+
+@if (!string.IsNullOrEmpty(ViewBag.ConfirmationMessage))
+{
+    <script>
+        // Masquer tous les éléments de la page sauf le message de confirmation
+        document.getElementById('pageContent').style.display = 'none';
+    </script>
+    <div class="alert alert-success">
+        @ViewBag.ConfirmationMessage
+    </div>
+}

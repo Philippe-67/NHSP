@@ -95,7 +95,7 @@ public class RdvController : ControllerBase
     //}
     // remplacé par: 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteRdv(int id)
+    public async Task<IActionResult> Delete(int id)
     {
         var rdv = await _context.Rdvs.FindAsync(id);
         if (rdv == null)

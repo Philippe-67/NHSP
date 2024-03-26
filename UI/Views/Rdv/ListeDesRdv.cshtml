@@ -1,0 +1,41 @@
+﻿ @model List<UI.Models.Rdv> 
+
+<div style="margin: 0 auto; width: 50%;">
+    <h1>Liste des rendez-vous</h1>
+
+
+<table>
+        <style>
+            th {
+                color: black; /* Définit la couleur du texte en noir */
+            }
+        </style>
+    <tr>
+        <th>Patient</th>
+        <th>Praticien</th>
+        <th>Date</th>
+        <th>Action</th>
+    </tr>
+    @foreach (var rdv in Model)
+    {
+        <tr>
+            @* <td>@ViewData["NomPatient"]</td>
+            <td>@ViewData["NomPraticien"]</td>
+           
+            <td>@rdv.Date</td> *@
+            <td>@rdv.NomPatient</td>
+            <td>@rdv.NomPraticien</td>
+
+            <td>@rdv.Date.ToString("dd-MM-yyyy")</td>
+                <td>
+                   @*  <form method="post" asp-action="Delete" asp-route-id="@rdv.Id">
+                        <input type="submit" value="Supprimer" class="btn btn-danger" />
+                    </form> *@
+                    <div style="margin-right: 20px;">
+                        <a href="@Url.Action("Delete", "Rdv", new { id = rdv.Id })" class="btn btn-danger">Supprimer</a>
+                    </div>
+                </td>
+        </tr>
+    }
+</table>
+</div>

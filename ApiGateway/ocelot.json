@@ -1,17 +1,19 @@
 {
 "Routes": [
-    {
-      "DownstreamPathTemplate": "/api/praticien",
-      "UpstreamPathTemplate": "/api/praticien",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 5002
-        }
-      ],
-      "UpstreamHttpMethod": [ "Get" ]
-      },
+  {
+    "DownstreamPathTemplate": "/api/praticien",
+    "UpstreamPathTemplate": "/api/praticien",
+    "DownstreamScheme": "https",
+    "DownstreamHostAndPorts": [
+      {
+        "Host": "localhost",
+        "Port": 5002
+      }
+    ],
+    //"UpstreamHttpMethod": [ "Get" ],
+    "UpstreamHttpMethod": [ "Get", "Post" ]
+
+  },
   {
     "DownstreamPathTemplate": "/api/rdv",
     "UpstreamPathTemplate": "/api/rdv",
@@ -25,7 +27,7 @@
     //"AuthenticationOptions": {
     //  "AuthenticationProviderKey": [ "Bearer" ]
     //},
-    "UpstreamHttpMethod": [ "Get", "Post" ]
+    "UpstreamHttpMethod": [ "Get", "Post","Delete" ]
 
   }
  
