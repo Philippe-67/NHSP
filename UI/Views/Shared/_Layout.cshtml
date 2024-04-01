@@ -69,7 +69,7 @@
                           
 @*                              <a href="~/Praticien/Index" class="btn btn-appoint">Prendre rendez-vous</a> 
  *@
-                            @if (User.IsInRole("praticien"))
+                            @if (User.IsInRole("praticien") || User.IsInRole("admin"))
                             {
                                 <a href="~/Praticien/Index" class="btn btn-appoint">Prendre rendez-vous</a>
                                 <a href="~/Praticien/IndexAdmin" class="btn btn-appoint">Voir rendez-vous</a>
