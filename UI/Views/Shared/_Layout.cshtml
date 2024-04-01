@@ -61,13 +61,21 @@
                         <div class="banner-text text-center">
                             <h1 class="white">HARMONIE SANTÉ PARAMÉDICAL</h1>
                             <p>Le paramédical depuis votre bureau.</p>
-                            @* <a href="~/Booking/Index" class="btn btn-appoint">Lister rendez-vous</a> *@
-                             <a href="~/Praticien/Index" class="btn btn-appoint">Prendre rendez-vous</a> 
 
-                            
-                          @* <a href="~/Rdv/ListeDesRdv" class="btn btn-appoint">voir rendez-vous</a>*@
-                             <a href="~/Praticien/IndexAdmin" class="btn btn-appoint">voir rendez-vous</a> 
-
+                            @if (User.IsInRole("utilisateur"))
+                            {
+                                <a href="~/Praticien/Index" class="btn btn-appoint">Prendre rendez-vous</a>
+                            }
+                          
+@*                              <a href="~/Praticien/Index" class="btn btn-appoint">Prendre rendez-vous</a> 
+ *@
+                            @if (User.IsInRole("praticien"))
+                            {
+                                <a href="~/Praticien/Index" class="btn btn-appoint">Prendre rendez-vous</a>
+                                <a href="~/Praticien/IndexAdmin" class="btn btn-appoint">Voir rendez-vous</a>
+                            }
+@*                             <a href="~/Praticien/IndexAdmin" class="btn btn-appoint">voir rendez-vous</a> 
+ *@
                         </div>
                         <div class="overlay-detail text-center">
                             <a href="#service"><i class="fa fa-angle-down"></i></a>

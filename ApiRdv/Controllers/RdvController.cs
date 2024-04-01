@@ -78,7 +78,7 @@ public class RdvController : ControllerBase
 
 
 
-   
+    [Authorize (Roles="praticien")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
