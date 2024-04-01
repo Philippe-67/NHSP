@@ -10,14 +10,9 @@ namespace ApiRdv.Data
         public RdvDbContext(DbContextOptions<RdvDbContext> options) : base(options)
         {
         }
-
         public DbSet<Rdv> Rdvs { get; set; }
-
-               
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
             base.OnModelCreating(modelBuilder);
         }
     }

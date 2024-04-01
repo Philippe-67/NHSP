@@ -10,7 +10,7 @@ using System.Net.Http.Headers;
 using UI.Models;
 
 
-[Authorize(Roles = "admin")]
+//[Authorize(Roles = "admin")]
 public class RdvController : Controller
 {
     private readonly HttpClient _httpClient;
@@ -189,55 +189,7 @@ public class RdvController : Controller
 
         }
     }
-    //public async Task<List<Rdv>> GetRdvsAsync()
-    //{
-    //    var response = await _httpClient.GetAsync("api/Rdv");
-    //    response.EnsureSuccessStatusCode();
-
-    //    var rdvs = await response.Content.ReadAsAsync<List<Rdv>>();
-    //    return rdvs;
-    //}
-    // public async Task<List<Rdv>> GetRdvsAsync()
-    //public async Task<List<Rdv>> ListeDesRdv(int praticienId, string nomPraticien,string nomPatient, DateTime date)
-
-    //{
-    //    ViewData["PraticienId"] = praticienId;
-    //    ViewData["NomPraticien"] = nomPraticien;
-    //    ViewData["NomPatient"] = nomPatient;
-    //    ViewData["DateTime"] = date;
-    //    HttpResponseMessage response = await _httpClient.GetAsync("/api/Rdv");
-
-    //    if (response.IsSuccessStatusCode)
-    //    {
-
-    //        string responseData = await response.Content.ReadAsStringAsync();
-    //        var listeRdvs = JsonConvert.DeserializeObject<List<Rdv>>(responseData);
-
-    //        // Filtrer les rendez-vous en fonction de nomPraticien
-    //        if (!string.IsNullOrEmpty(nomPraticien))
-    //        {
-    //            listeRdvs = listeRdvs.Where(rdv => rdv.NomPraticien == nomPraticien).ToList();
-    //        }
-    //        // Filtrer les rendez-vous en fonction de praticienId s'il est spécifié
-
-    //        // Trier les rendez-vous par ordre chronologique
-    //        listeRdvs = listeRdvs.OrderBy(rdv => rdv.Date).ToList();
-
-
-    //        // Utilise les données comme nécessaire, peut-être passer à la vue
-    //      //  ViewBag.Rdvs = listeRdvs;
-
-
-
-
-    //        return View(listeRdvs);
-
-    //        //var response = await _httpClient.GetAsync("api/Rdv");
-    //        //response.EnsureSuccessStatusCode();
-
-    //        //var View = await response.Content.ReadAsAsync<List<Rdv>>();
-    //        //return View;
-    //    }
+   
     public async Task<IActionResult> ListeDesRdv(int praticienId, string nomPraticien, string nomPatient, DateTime date)
     {
         ViewData["PraticienId"] = praticienId;
@@ -312,8 +264,15 @@ public class RdvController : Controller
 
             if (response.IsSuccessStatusCode)
             {
+                
+
+                // Ajoutez le message de confirmation à TempData
+                TempData["ConfirmationMessage"] = $"Le rendez-vous a bien été annulé.";
+
+
                 // Redirection vers l'action "Index" après la suppression
                 return RedirectToAction("Index");
+                //return View();
             }
             else
             {

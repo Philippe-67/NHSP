@@ -54,7 +54,7 @@ public class RdvController : ControllerBase
             }
 
             // Simulation d'une opération prenant moins d'une minute
-            await Task.Delay(TimeSpan.FromSeconds(30));
+          //  await Task.Delay(TimeSpan.FromSeconds(1));
 
             _context.Rdvs.Add(rdv);
             await _context.SaveChangesAsync();
@@ -78,22 +78,7 @@ public class RdvController : ControllerBase
 
 
 
-    //// DELETE: api/Rdv/5
-    //[HttpDelete("{id}")]
-    //public async Task<IActionResult> DeleteRdv(int id)
-    //{
-    //    var rdv = await _context.Rdvs.FindAsync(id);
-    //    if (rdv == null)
-    //    {
-    //        return NotFound();
-    //    }
-
-    //    _context.Rdvs.Remove(rdv);
-    //    await _context.SaveChangesAsync();
-
-    //    return NoContent();
-    //}
-    // remplacé par: 
+   
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {

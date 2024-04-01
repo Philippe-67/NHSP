@@ -27,7 +27,23 @@
     //"AuthenticationOptions": {
     //  "AuthenticationProviderKey": [ "Bearer" ]
     //},
-    "UpstreamHttpMethod": [ "Get", "Post","Delete" ]
+    "UpstreamHttpMethod": [ "Get", "Post", "Delete" ]
+
+  },
+  {
+    "DownstreamPathTemplate": "/api/rdv/{id}",
+    "UpstreamPathTemplate": "/api/rdv/{id}",
+    "DownstreamScheme": "https",
+    "DownstreamHostAndPorts": [
+      {
+        "Host": "localhost",
+        "Port": 5001
+      }
+    ],
+    //"AuthenticationOptions": {
+    //  "AuthenticationProviderKey": [ "Bearer" ]
+    //},
+    "UpstreamHttpMethod": [  "Delete" ]
 
   }
  
