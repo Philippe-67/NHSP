@@ -20,6 +20,7 @@ namespace TestRDV
             // Utilisez une base de données en mémoire pour les tests
             using (var context = new RdvDbContext(options))
             {
+                CleanData(context);
                 // Ajoutez des rendez-vous de test à la base de données en mémoire
                 context.Rdvs.Add(new Rdv { Id = 1, NomPatient = "Patient1", NomPraticien = "Praticien1", Date = DateTime.Now });
                 context.Rdvs.Add(new Rdv { Id = 2, NomPatient = "Patient2", NomPraticien = "Praticien2", Date = DateTime.Now });
@@ -103,6 +104,7 @@ namespace TestRDV
 
             using (var context = new RdvDbContext(options))
             {
+                CleanData(context);
                 context.Rdvs.Add(new Rdv { Id = 3, NomPatient = "Patient1", NomPraticien = "Praticien1", Date = DateTime.Now });
                 context.Rdvs.Add(new Rdv { Id = 4, NomPatient = "Patient2", NomPraticien = "Praticien2", Date = DateTime.Now });
                 context.SaveChanges();
@@ -118,6 +120,14 @@ namespace TestRDV
                 Assert.IsType<NoContentResult>(result);
 
             }
+        }
+        private static void CleanData(RdvDbContext context)
+        {
+            foreach (var item in context.Rdvs)
+            {
+                context.Rdvs.Remove(item);
+            }
+            context.SaveChanges();
         }
     }
 }
