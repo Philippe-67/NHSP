@@ -9,7 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiPraticien", "ApiPraticie
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiRdv", "ApiRdv\ApiRdv.csproj", "{B4A579B9-49EF-48EB-BE1E-DF01949DA16A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateWay", "ApiGateWay\ApiGateWay.csproj", "{C1C33993-4B40-4F5D-A682-7CB7FBEF29BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiGateWay", "ApiGateWay\ApiGateWay.csproj", "{C1C33993-4B40-4F5D-A682-7CB7FBEF29BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApiRdv", "TestApiRdv\TestApiRdv.csproj", "{F761DFA1-8E47-4ADD-A38E-604235E05E9D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApiPraticien", "TestApiPraticien\TestApiPraticien.csproj", "{C9C354F5-7476-49A5-92C2-71D1F957C73D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +37,14 @@ Global
 		{C1C33993-4B40-4F5D-A682-7CB7FBEF29BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1C33993-4B40-4F5D-A682-7CB7FBEF29BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C1C33993-4B40-4F5D-A682-7CB7FBEF29BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F761DFA1-8E47-4ADD-A38E-604235E05E9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F761DFA1-8E47-4ADD-A38E-604235E05E9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F761DFA1-8E47-4ADD-A38E-604235E05E9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F761DFA1-8E47-4ADD-A38E-604235E05E9D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9C354F5-7476-49A5-92C2-71D1F957C73D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9C354F5-7476-49A5-92C2-71D1F957C73D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9C354F5-7476-49A5-92C2-71D1F957C73D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9C354F5-7476-49A5-92C2-71D1F957C73D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

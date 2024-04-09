@@ -73,6 +73,7 @@ namespace UI.Controllers
 
            var jwtToken = result.Token;
 
+
             if (result.StatusCode == 1 && jwtToken != string.Empty)
             {
                 // Ajoutez des messages de débogage

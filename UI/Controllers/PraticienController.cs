@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using UI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace UI.Controllers
 {
@@ -87,6 +88,37 @@ namespace UI.Controllers
                     return StatusCode(500, $"Erreur lors de la requête : {ex.Message}");
                 }
             }
+
+        [HttpGet]
+        public IActionResult Create(int praticienId, string nomPraticien)
+        {
+            ViewData["PraticienId"] = praticienId;
+            ViewData["NomPraticien"] = nomPraticien;
+            // Affiche le formulaire de création de praticien
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(Praticien praticien)
+        {
+            //try
+            //{
+
+                var response = await _httpClient.PostAsJsonAsync("api/Praticien", praticien);
+                //_context.Praticiens.Add(praticien);
+                //await _context.SaveChangesAsync();
+
+                // Ajoutez le message de confirmation à TempData
+                TempData["ConfirmationMessage"] = $"Le praticien {praticien.NomPraticien} a été créé avec succès.";
+
+                // Redirige vers l'action "Index" ou une autre action pertinente
+                return RedirectToAction("Index");
+            }
+            //catch (Exception ex)
+            //{
+            //    return View("Error", ex.Message);
+            //}
+        }
     }
-}
+
 

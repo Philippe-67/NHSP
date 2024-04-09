@@ -1,0 +1,17 @@
+﻿@model UI.Models.Praticien
+
+<div style="margin: 0 auto; width: 50%;">
+    <h2 style="margin-top: 20px; margin-bottom: 20px;">Creation d'un compte Praticien : </h2>
+    <form asp-action="Create" asp-controller="Praticien" method="post">
+        <div class="form-group">
+            <label asp-for="NomPraticien"></label>
+            <input asp-for="NomPraticien" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Specialite"></label>
+            <input asp-for="Specialite" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary">Créer</button>
+    </form>
+ </div>
+    

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-//[Authorize(Roles="admin")]
+//[Authorize(Roles="admin,praticien")]
 [Route("api/[controller]")]
 [ApiController]
 public class RdvController : ControllerBase
@@ -54,7 +54,7 @@ public class RdvController : ControllerBase
             }
 
             // Simulation d'une opération prenant moins d'une minute
-          //  await Task.Delay(TimeSpan.FromSeconds(1));
+            await Task.Delay(TimeSpan.FromSeconds(1));
 
             _context.Rdvs.Add(rdv);
             await _context.SaveChangesAsync();
@@ -78,7 +78,7 @@ public class RdvController : ControllerBase
 
 
 
-    [Authorize (Roles="praticien")]
+  [Authorize (Roles="praticien")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
@@ -99,7 +99,7 @@ public class RdvController : ControllerBase
         {
             _reservationSemaphore.Release();
         }
-
+        
         return NoContent();
     }
 

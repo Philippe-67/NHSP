@@ -69,13 +69,18 @@
                           
 @*                              <a href="~/Praticien/Index" class="btn btn-appoint">Prendre rendez-vous</a> 
  *@
-                            @if (User.IsInRole("praticien") || User.IsInRole("admin"))
+                            @if (User.IsInRole("praticien") )
                             {
                                 <a href="~/Praticien/Index" class="btn btn-appoint">Prendre rendez-vous</a>
                                 <a href="~/Praticien/IndexAdmin" class="btn btn-appoint">Voir rendez-vous</a>
                             }
-@*                             <a href="~/Praticien/IndexAdmin" class="btn btn-appoint">voir rendez-vous</a> 
- *@
+                            @if ( User.IsInRole("admin"))
+                            {
+                                @* <a href="~/Praticien/Index" class="btn btn-appoint">Prendre rendez-vous</a> *@
+                                <a href="~/Praticien/IndexAdmin" class="btn btn-appoint">Voir rendez-vous</a>
+                                <a href="~/Praticien/Create" class="btn btn-appoint">Créer un compte Praticien</a>
+                            }
+
                         </div>
                         <div class="overlay-detail text-center">
                             <a href="#service"><i class="fa fa-angle-down"></i></a>

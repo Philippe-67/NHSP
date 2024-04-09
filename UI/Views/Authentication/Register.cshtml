@@ -4,7 +4,19 @@
     Layout= null;
     ViewData["Title"] = "Inscription";
 }
-<h1>@ViewData["Title"]</h1>
+@* <h1>@ViewData["Title"]</h1>
+ *@
+  
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="~/css/login.css" />
+    <title>Inscription</title> 
+</head>
+<body>
 
 <form asp-action="Register" method="post">
     <div class="container">
@@ -54,5 +66,9 @@
         <button type="submit" class="btn btn-info">valider l'insciption</button>
         <a class="btn btn-primary" href="/Authentication/Login">Connexion</a>
 </form>
+
+    <script src="~/js/authentication.js"></script>
+</body>
+</html>
         
 

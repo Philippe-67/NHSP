@@ -1,11 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authorization.Infrastructure;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.Data;
-using System.Net.Http;
 using System.Net.Http.Headers;
 using UI.Models;
 
@@ -87,7 +84,7 @@ public class RdvController : Controller
 
 
 
-        //try
+        try
         {
             // Récupération du  jeton JWT de la session HTTP stocker dans la méthode Login de AuthenticationController.cs
             var token = _contextAccessor.HttpContext.Session.GetString("token");
@@ -130,12 +127,12 @@ public class RdvController : Controller
             {
                 return StatusCode((int)response.StatusCode, $"Erreur HTTP: {response.StatusCode}");
             }
-
-            //catch (Exception ex)
-            //{
-            //    return StatusCode(500, $"Erreur lors de la requête : {ex.Message}");
-            //}
         }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erreur lors de la requête : {ex.Message}");
+            }
+        
     }
         
 
