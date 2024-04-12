@@ -24,9 +24,7 @@
         "Port": 5001
       }
     ],
-    //"AuthenticationOptions": {
-    //  "AuthenticationProviderKey": [ "Bearer" ]
-    //},
+   
     "UpstreamHttpMethod": [ "Get", "Post", "Delete" ]
 
   },
@@ -40,9 +38,7 @@
         "Port": 5001
       }
     ],
-    //"AuthenticationOptions": {
-    //  "AuthenticationProviderKey": [ "Bearer" ]
-    //},
+   
     "UpstreamHttpMethod": [  "Delete" ]
 
   }

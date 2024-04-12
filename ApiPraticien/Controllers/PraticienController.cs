@@ -46,13 +46,13 @@ namespace ApiPraticien.Controllers
         [HttpPost]
         public async Task<ActionResult<Praticien>> Create(Praticien praticien)
         {
-            
+
             try
             {
                 _context.Praticiens.Add(praticien);
                 await _context.SaveChangesAsync();
 
-               // return CreatedAtAction(nameof(Praticien), new { id = praticien.Id }, praticien);
+                // return CreatedAtAction(nameof(Praticien), new { id = praticien.Id }, praticien);
                 return CreatedAtAction(nameof(GetPraticiens), praticien);
             }
             catch (Exception ex)
@@ -89,8 +89,8 @@ namespace ApiPraticien.Controllers
 
             return NoContent();
         }
-       
-         // DELETE: api/Praticien/5
+
+        // DELETE: api/Praticien/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePraticien(int id)
         {

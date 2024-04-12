@@ -1,11 +1,11 @@
-using UI.Data;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
-using UI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using System.Text;
+using UI.Data;
+using UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -84,7 +84,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-   // pattern: "{controller=Home}/{action=Index}/{id?}");
+// pattern: "{controller=Home}/{action=Index}/{id?}");
 pattern: "{controller=Authentication}/{action=login}/{id?}");//ouvre l'application sur la page de login
 
 app.Run();

@@ -106,8 +106,7 @@ public class RdvController : Controller
                 {
                     listeRdvs = listeRdvs.Where(rdv => rdv.NomPraticien == nomPraticien).ToList();
                 }
-                // Filtrer les rendez-vous en fonction de praticienId s'il est spécifié
-
+                
                 // Trier les rendez-vous par ordre chronologique
                 listeRdvs = listeRdvs.OrderBy(rdv => rdv.Date).ToList();
 
@@ -128,15 +127,15 @@ public class RdvController : Controller
                 return StatusCode((int)response.StatusCode, $"Erreur HTTP: {response.StatusCode}");
             }
         }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Erreur lors de la requête : {ex.Message}");
-            }
-        
-    }
-        
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Erreur lors de la requête : {ex.Message}");
+        }
 
-        private bool EstBissextile(int annee)
+    }
+
+
+    private bool EstBissextile(int annee)
     {
         return (annee % 4 == 0 && annee % 100 != 0) || (annee % 400 == 0);
     }
@@ -186,7 +185,7 @@ public class RdvController : Controller
 
         }
     }
-   
+
     public async Task<IActionResult> ListeDesRdv(int praticienId, string nomPraticien, string nomPatient, DateTime date)
     {
         ViewData["PraticienId"] = praticienId;
@@ -212,7 +211,7 @@ public class RdvController : Controller
 
                 // Trier les rendez-vous par ordre chronologique
                 listeRdvs = listeRdvs.OrderBy(rdv => rdv.Date).ToList();
-                listeRdvs=listeRdvs.Where(rdv=>rdv.Date.Date >= DateTime.Today.Date).ToList();
+                listeRdvs = listeRdvs.Where(rdv => rdv.Date.Date >= DateTime.Today.Date).ToList();
                 // Passer les données à la vue
                 return View(listeRdvs);
             }
@@ -261,7 +260,7 @@ public class RdvController : Controller
 
             if (response.IsSuccessStatusCode)
             {
-                
+
 
                 // Ajoutez le message de confirmation à TempData
                 TempData["ConfirmationMessage"] = $"Le rendez-vous a bien été annulé.";

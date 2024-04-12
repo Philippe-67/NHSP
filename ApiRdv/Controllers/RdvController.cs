@@ -37,7 +37,7 @@ public class RdvController : ControllerBase
 
         return rdv;
     }
-    
+
     [HttpPost]
     public async Task<ActionResult<Rdv>> Create(Rdv rdv)
     {
@@ -78,7 +78,7 @@ public class RdvController : ControllerBase
 
 
 
-  [Authorize (Roles="praticien")]
+    [Authorize(Roles = "praticien")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
@@ -88,7 +88,7 @@ public class RdvController : ControllerBase
             return NotFound();
         }
 
-       await _reservationSemaphore.WaitAsync();
+        await _reservationSemaphore.WaitAsync();
 
         try
         {
@@ -99,7 +99,7 @@ public class RdvController : ControllerBase
         {
             _reservationSemaphore.Release();
         }
-        
+
         return NoContent();
     }
 

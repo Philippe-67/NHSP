@@ -1,12 +1,12 @@
-﻿using UI.Models;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using UI.Models;
 
 namespace UI.Services
 {
-    public class AuthService :IAuthService
+    public class AuthService : IAuthService
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
@@ -116,7 +116,7 @@ namespace UI.Services
                     authClaims.Add(new Claim(ClaimTypes.Role, userRole));
                 }
 
-               status.Token = jwtToken;
+                status.Token = jwtToken;
                 status.StatusCode = 1;
                 status.StatusMessage = "Logged in successfully";
             }

@@ -9,7 +9,7 @@ namespace TestsPraticien
 {
     public class PraticienControllerTests
     {
-       
+
 
         [Fact]
         public async Task GetPraticiens_ReturnsPraticiens()
@@ -18,7 +18,7 @@ namespace TestsPraticien
             var options = new DbContextOptionsBuilder<PraticienDbContext>()
                 .UseInMemoryDatabase(databaseName: "InMemoryPraticiens")
                 .Options;
-           
+
             using (var context = new PraticienDbContext(options))
             {
                 CleanData(context);
@@ -39,7 +39,7 @@ namespace TestsPraticien
                 var actionResult = Assert.IsType<ActionResult<IEnumerable<Praticien>>>(result);
                 var praticiens = Assert.IsAssignableFrom<IEnumerable<Praticien>>(actionResult.Value);
                 Assert.Equal(2, praticiens.Count());
-            
+
                 context.Database.EnsureDeleted();
             }
         }
@@ -64,8 +64,8 @@ namespace TestsPraticien
             using (var context = new PraticienDbContext(options))
             {
                 var controller = new PraticienController(context, new LoggerFactory().CreateLogger<PraticienController>());
-                
-                var newPraticien = new Praticien { Id = 8, NomPraticien = "Dr. Smiths",Specialite = "généraliste" };
+
+                var newPraticien = new Praticien { Id = 8, NomPraticien = "Dr. Smiths", Specialite = "généraliste" };
 
                 // Act
                 var result = await controller.Create(newPraticien);
@@ -75,8 +75,8 @@ namespace TestsPraticien
                 var createdResult = (CreatedAtActionResult)result.Result;
                 Assert.Equal(201, createdResult.StatusCode);
                 Assert.Equal("GetPraticiens", createdResult.ActionName);
-               // Assert.Equal(8, createdResult.RouteValues["Id"]);
-           
+                Assert.Equal(8, actual: createdResult.RouteValues["Id"]);
+
             }
             using (var context = new PraticienDbContext(options))
             {
@@ -101,14 +101,14 @@ namespace TestsPraticien
             using (var context = new PraticienDbContext(options))
             {
                 var controller = new PraticienController(context, new LoggerFactory().CreateLogger<PraticienController>());
-                var existingPraticien = new Praticien { Id = 1, NomPraticien = "Dr. Smith" ,Specialite = "généraliste" };  // Modifiez les propriétés du praticien selon le scénario de test
+                var existingPraticien = new Praticien { Id = 1, NomPraticien = "Dr. Smith", Specialite = "généraliste" };  // Modifiez les propriétés du praticien selon le scénario de test
 
                 // Act
                 var result = await controller.PutPraticien(1, existingPraticien);
 
                 // Assert
                 Assert.IsType<NoContentResult>(result);
-            
+
                 context.Database.EnsureDeleted();
             }
         }
@@ -123,7 +123,7 @@ namespace TestsPraticien
 
             using (var context = new PraticienDbContext(options))
             {
-                context.Praticiens.Add(new Praticien { Id = 1, NomPraticien = "Dr. Smith",Specialite="généraliste" });
+                context.Praticiens.Add(new Praticien { Id = 1, NomPraticien = "Dr. Smith", Specialite = "généraliste" });
                 context.SaveChanges();
             }
 
@@ -143,7 +143,7 @@ namespace TestsPraticien
             }
         }
 
-       
+
 
     }
 }

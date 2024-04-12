@@ -1,11 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using UI.Models;
 using UI.Services;
-using System.Text;
-
-using System.Net.Http.Headers;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
 namespace UI.Controllers
 {
     public class AuthenticationController : Controller
@@ -19,7 +15,7 @@ namespace UI.Controllers
         public AuthenticationController(
             UserManager<IdentityUser> userManager,
             RoleManager<IdentityRole> roleManager,
-          //  IConfiguration configuration,
+            //  IConfiguration configuration,
             IAuthService authService,
             IHttpContextAccessor contextAccessor,
             ILogger<AuthenticationController> logger)
@@ -27,11 +23,11 @@ namespace UI.Controllers
 
             _userManager = userManager;
             _roleManager = roleManager;
-         //   _configuration = configuration; 
+            //   _configuration = configuration; 
             _authService = authService;
             _contextAccessor = contextAccessor;
             _logger = logger;
-        } 
+        }
 
         public IActionResult Register()
         {
@@ -39,8 +35,8 @@ namespace UI.Controllers
         }
 
         [HttpPost]
-       // public async Task<IActionResult> RegisterAsync([FromBody] Register model)
-          public async Task<IActionResult> RegisterAsync( Register model)
+        // public async Task<IActionResult> RegisterAsync([FromBody] Register model)
+        public async Task<IActionResult> RegisterAsync(Register model)
         {
 
             _logger.LogInformation($"Tentative d'inscription ");
@@ -71,12 +67,12 @@ namespace UI.Controllers
 
             var result = await _authService.LoginAsync(model);
 
-           var jwtToken = result.Token;
+            var jwtToken = result.Token;
 
 
             if (result.StatusCode == 1 && jwtToken != string.Empty)
             {
-                // Ajoutez des messages de débogage
+                // log messages de débogage
                 _logger.LogInformation($"Utilisateur  authentifié avec succès : {model.Email}");
                 // Stockage (SetString) du jeton JWT dans la session HTTP à l'aide de IHttpContextAccessor mis en place dans le contructeur
                 _contextAccessor.HttpContext.Session.SetString("token", jwtToken);

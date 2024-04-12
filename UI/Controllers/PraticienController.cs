@@ -1,14 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using UI.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace UI.Controllers
 {
-   // [Authorize(Roles = "praticien,admin")]
+    // [Authorize(Roles = "praticien,admin")]
     public class PraticienController : Controller
     {
         private readonly HttpClient _httpClient;
@@ -57,37 +55,37 @@ namespace UI.Controllers
                 return StatusCode(500, $"Erreur lors de la requête : {ex.Message}");
             }
         }
-            [HttpGet]
-            public async Task<IActionResult> IndexAdmin()
+        [HttpGet]
+        public async Task<IActionResult> IndexAdmin()
+        {
+            try
             {
-                try
-                {
-                    // Récupération du  jeton JWT de la session HTTP stocker dans la méthode Login de AuthenticationController.cs
-                    var token = _contextAccessor.HttpContext.Session.GetString("token");
-                    // Ajouter le jeton JWT dans l'en-tête d'autorisation de votre HttpClient
-                    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                    HttpResponseMessage response = await _httpClient.GetAsync("/api/Praticien");
+                // Récupération du  jeton JWT de la session HTTP stocker dans la méthode Login de AuthenticationController.cs
+                var token = _contextAccessor.HttpContext.Session.GetString("token");
+                // Ajouter le jeton JWT dans l'en-tête d'autorisation de votre HttpClient
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                HttpResponseMessage response = await _httpClient.GetAsync("/api/Praticien");
 
-                    if (response.IsSuccessStatusCode)
-                    {
-                        // Lecture et traitement des données
-                        string responseData = await response.Content.ReadAsStringAsync();
-                        // Désérialise la chaîne JSON en une liste d'objets
-                        var praticiens = JsonConvert.DeserializeObject<List<Praticien>>(responseData);
-                        // Utilise les données comme nécessaire, peut-être passer à la vue
-                        ViewBag.Praticiens = praticiens;
-                        return View();
-                    }
-                    else
-                    {
-                        return StatusCode((int)response.StatusCode, $"Erreur HTTP: {response.StatusCode}");
-                    }
-                }
-                catch (Exception ex)
+                if (response.IsSuccessStatusCode)
                 {
-                    return StatusCode(500, $"Erreur lors de la requête : {ex.Message}");
+                    // Lecture et traitement des données
+                    string responseData = await response.Content.ReadAsStringAsync();
+                    // Désérialise la chaîne JSON en une liste d'objets
+                    var praticiens = JsonConvert.DeserializeObject<List<Praticien>>(responseData);
+                    // Utilise les données comme nécessaire, peut-être passer à la vue
+                    ViewBag.Praticiens = praticiens;
+                    return View();
+                }
+                else
+                {
+                    return StatusCode((int)response.StatusCode, $"Erreur HTTP: {response.StatusCode}");
                 }
             }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erreur lors de la requête : {ex.Message}");
+            }
+        }
 
         [HttpGet]
         public IActionResult Create(int praticienId, string nomPraticien)
@@ -101,8 +99,8 @@ namespace UI.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Praticien praticien)
         {
-            //try
-            //{
+            try
+            {
 
                 var response = await _httpClient.PostAsJsonAsync("api/Praticien", praticien);
                 //_context.Praticiens.Add(praticien);
@@ -114,11 +112,12 @@ namespace UI.Controllers
                 // Redirige vers l'action "Index" ou une autre action pertinente
                 return RedirectToAction("Index");
             }
-            //catch (Exception ex)
-            //{
-            //    return View("Error", ex.Message);
-            //}
+
+            catch (Exception ex)
+            {
+                return View("Error", ex.Message);
+            }
         }
     }
-
+}
 

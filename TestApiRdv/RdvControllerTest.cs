@@ -1,7 +1,7 @@
-using Microsoft.EntityFrameworkCore;
 using ApiRdv.Data;
 using ApiRdv.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace TestRDV

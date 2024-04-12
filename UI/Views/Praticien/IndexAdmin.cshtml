@@ -24,9 +24,7 @@
                     <td>@praticien.Specialite</td>
                     <td>
                         <div style="margin-right: 20px;">
-                           @* <a href="@Url.Action("Index", "Rdv", new { praticienId = praticien.Id, nomPraticien = praticien.NomPraticien })" class="btn btn-primary">accéder à l'agenda</a>*@
-                            <a href="@Url.Action("ListeDesRdv", "Rdv", new { praticienId = praticien.Id, nomPraticien = praticien.NomPraticien })" class="btn btn-primary">accéder à l'agenda</a>
-
+                             <a href="@Url.Action("ListeDesRdv", "Rdv", new { praticienId = praticien.Id, nomPraticien = praticien.NomPraticien })" class="btn btn-primary">accéder à l'agenda</a>
                         </div>
                     </td>
                 </tr>
