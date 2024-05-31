@@ -53,7 +53,7 @@ builder.Services.AddHttpContextAccessor();
 
 ///ajoute le support pour les contrôleurs MVC avec les vues dans votre application, ce qui permet de créer des routes 
 ///et de gérer les requêtes HTTP entrantes en fonction des actions des contrôleurs.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
 //configuration des logs
 var configuration = builder.Configuration;

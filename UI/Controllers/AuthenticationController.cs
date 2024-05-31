@@ -15,7 +15,7 @@ namespace UI.Controllers
         public AuthenticationController(
             UserManager<IdentityUser> userManager,
             RoleManager<IdentityRole> roleManager,
-            //  IConfiguration configuration,
+          //   IConfiguration configuration,
             IAuthService authService,
             IHttpContextAccessor contextAccessor,
             ILogger<AuthenticationController> logger)
@@ -23,7 +23,7 @@ namespace UI.Controllers
 
             _userManager = userManager;
             _roleManager = roleManager;
-            //   _configuration = configuration; 
+          //  _configuration = configuration; 
             _authService = authService;
             _contextAccessor = contextAccessor;
             _logger = logger;
